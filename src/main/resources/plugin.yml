@@ -1,0 +1,5 @@
+name: SimpliciteEgg
+author: roblikescake
+main: net.simplicite_mc.roblikescake.simpliciteegg.SimpliciteEgg
+description: Makes spawn eggs spawn baby animals and capturing animals in spawn eggs using defined special item.
+version: ${project.version}-b${BUILD_NUMBER}
