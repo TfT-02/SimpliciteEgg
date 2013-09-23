@@ -1,33 +1,21 @@
 package net.simplicite_mc.roblikescake.simpliciteegg;
 
-import org.bukkit.event.entity.CreatureSpawnEvent;
+import net.simplicite_mc.roblikescake.simpliciteegg.listeners.PlayerListener;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class SimpliciteEgg extends JavaPlugin{
 
     @Override
     public void onEnable() {
-        loadConfig();
+        getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
+        this.getServer().addRecipe(AnimalCatcher);
     }
 
     @Override
     public void onDisable() {
-        unloadConfig();
+        getServer().clearRecipes();
     }
 
-    public void loadConfig() {
-        saveDefaultConfig();
-        saveConfig();
-    }
 
-    public void unloadConfig() {
-        reloadConfig();
-        saveConfig();
-    }
-
-    public void onSpawnEggUse(CreatureSpawnEvent event) {
-    }
-
-    public void onCaptureMob() {
-    }
 }
