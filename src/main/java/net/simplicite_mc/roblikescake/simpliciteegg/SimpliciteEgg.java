@@ -8,8 +8,9 @@ public class SimpliciteEgg extends JavaPlugin{
 
     @Override
     public void onEnable() {
-        getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
-        this.getServer().addRecipe(AnimalCatcher);
+        PlayerListener listener = new PlayerListener(this);
+        getServer().getPluginManager().registerEvents(listener, this);
+        this.getServer().addRecipe(listener.AnimalCatcher);
     }
 
     @Override
