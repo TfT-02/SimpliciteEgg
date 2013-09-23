@@ -4,14 +4,14 @@
     <groupId>net.simplicite_mc.roblikescake.simpliciteegg</groupId>
     <artifactId>SimpliciteEgg</artifactId>
     <version>0.0.1-dev1</version>
-    <name>IdealChat</name>
+    <name>SimpliciteEgg</name>
     <url>https://github.com/roblikescake/SimpliciteEgg</url>
     <issueManagement>
         <system>GitHub</system>
         <url>https://github.com/roblikescake/SimpliciteEgg/issues</url>
     </issueManagement>
     <build>
-        <finalName>IdealChat</finalName>
+        <finalName>SimpliciteEgg</finalName>
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
         <resources>
             <resource>
