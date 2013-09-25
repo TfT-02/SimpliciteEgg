@@ -13,7 +13,6 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.SpawnEgg;
 
 public class PlayerListener implements Listener {
     public SimpliciteEgg plugin;
@@ -28,11 +27,9 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         Entity interactedEntity = event.getRightClicked();
         String interactedEntityName = interactedEntity.getType().name();
-        EntityType interactedEntityType = interactedEntity.getType();
         Location location = interactedEntity.getLocation();
         ItemStack itemStack = player.getItemInHand();
-        ItemStack interactedEntityEgg = new ItemStack(Material.MONSTER_EGG);
-        interactedEntityEgg.setData(new SpawnEgg(interactedEntityType));
+        ItemStack interactedEntityEgg = new ItemStack(Material.MONSTER_EGG).setDurability(interactedEntity.getEntityId());
 
         if (itemStack.getType() != Material.EGG) {
             System.out.println("This aint an egg!");
@@ -61,6 +58,4 @@ public class PlayerListener implements Listener {
         item.setItemMeta(meta);
         return item;
     }
-
-
 }
