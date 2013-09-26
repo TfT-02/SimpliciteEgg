@@ -1,11 +1,13 @@
 package net.simplicite_mc.roblikescake.simpliciteegg.listeners;
 
-import net.simplicite_mc.roblikescake.simpliciteegg.SimpliciteEgg;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Egg;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -14,13 +16,15 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import net.simplicite_mc.roblikescake.simpliciteegg.SimpliciteEgg;
+
 
 public class PlayerListener implements Listener {
     public SimpliciteEgg plugin;
+
     public PlayerListener(SimpliciteEgg i) {
         plugin = i;
     }
-
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void PlayerCatchAnimal(PlayerInteractEntityEvent event) {
@@ -35,7 +39,8 @@ public class PlayerListener implements Listener {
         if (itemStack.getType() != Material.EGG) {
             return;
         }
-        if (itemStack.isSimilar(setName(new ItemStack(Material.EGG), ChatColor.AQUA + "AnimalCatcher"))) {
+
+        if (itemStack.isSimilar(getAnimalCatcher())) {
             if (interactedEntityType == EntityType.CHICKEN) {
                 player.getWorld().dropItemNaturally(location, new ItemStack(Material.MONSTER_EGG, 1, (short) 93));
             } else if (interactedEntityType == EntityType.COW) {
@@ -66,12 +71,20 @@ public class PlayerListener implements Listener {
             player.sendMessage(pluginPrefix + ChatColor.GREEN + " You caught a " + ChatColor.BLUE + interactedEntityName + ChatColor.GREEN + "!");
         }
     }
-    public ShapedRecipe AnimalCatcher = new ShapedRecipe(setName(new ItemStack(Material.EGG), ChatColor.AQUA + "AnimalCatcher")).shape(" ! ","!!!"," ! ").setIngredient('!', Material.EGG);
 
-    public ItemStack setName(ItemStack item, String name) {
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(name);
-        item.setItemMeta(meta);
-        return item;
+    public ShapedRecipe getAnimalCatcherRecipe() {
+        ShapedRecipe AnimalCatcher = new ShapedRecipe(getAnimalCatcher());
+        AnimalCatcher.shape(" X ", "XXX", " X ");
+        AnimalCatcher.setIngredient('X', Material.EGG);
+
+        return AnimalCatcher;
+    }
+
+    public ItemStack getAnimalCatcher() {
+        ItemStack itemStack = new ItemStack(Material.EGG);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName(ChatColor.AQUA + "AnimalCatcher");
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
     }
 }
