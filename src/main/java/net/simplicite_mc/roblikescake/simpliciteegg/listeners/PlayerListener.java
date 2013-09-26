@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 
+
 public class PlayerListener implements Listener {
     public SimpliciteEgg plugin;
     public PlayerListener(SimpliciteEgg i) {
@@ -23,32 +24,47 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void PlayerCatchAnimal(PlayerInteractEntityEvent event) {
-        String pluginPrefix = ChatColor.DARK_GRAY + "[" + ChatColor.AQUA + "SMC " + ChatColor.BLUE + "-" + ChatColor.AQUA + "Egg" + ChatColor.DARK_GRAY + "]";
+        String pluginPrefix = ChatColor.BLACK + "[" + ChatColor.AQUA + "SMC" + ChatColor.GRAY + "-" + ChatColor.DARK_AQUA + "Egg" + ChatColor.BLACK + "]";
         Player player = event.getPlayer();
         Entity interactedEntity = event.getRightClicked();
+        EntityType interactedEntityType = interactedEntity.getType();
         String interactedEntityName = interactedEntity.getType().name();
         Location location = interactedEntity.getLocation();
         ItemStack itemStack = player.getItemInHand();
-        ItemStack interactedEntityEgg = new ItemStack(Material.MONSTER_EGG).setDurability(interactedEntity.getEntityId());
 
         if (itemStack.getType() != Material.EGG) {
-            System.out.println("This aint an egg!");
             return;
         }
-        if (itemStack.equals(setName(new ItemStack(Material.EGG), ChatColor.AQUA + "AnimalCatcher"))) {
-            System.out.println("Its a custom egg!");
+        if (itemStack.isSimilar(setName(new ItemStack(Material.EGG), ChatColor.AQUA + "AnimalCatcher"))) {
+            if (interactedEntityType == EntityType.CHICKEN) {
+                player.getWorld().dropItemNaturally(location, new ItemStack(Material.MONSTER_EGG, 1, (short) 93));
+            } else if (interactedEntityType == EntityType.COW) {
+                player.getWorld().dropItemNaturally(location, new ItemStack(Material.MONSTER_EGG, 1, (short) 92));
+            } else if (interactedEntityType == EntityType.HORSE) {
+                player.getWorld().dropItemNaturally(location, new ItemStack(Material.MONSTER_EGG, 1, (short) 100));
+            } else if (interactedEntityType == EntityType.MUSHROOM_COW) {
+                player.getWorld().dropItemNaturally(location, new ItemStack(Material.MONSTER_EGG, 1, (short) 96));
+            } else if (interactedEntityType == EntityType.OCELOT) {
+                player.getWorld().dropItemNaturally(location, new ItemStack(Material.MONSTER_EGG, 1, (short) 98));
+            } else if (interactedEntityType == EntityType.PIG) {
+                player.getWorld().dropItemNaturally(location, new ItemStack(Material.MONSTER_EGG, 1, (short) 90));
+            } else if (interactedEntityType == EntityType.SHEEP) {
+                player.getWorld().dropItemNaturally(location, new ItemStack(Material.MONSTER_EGG, 1, (short) 91));
+            } else if (interactedEntityType == EntityType.SQUID) {
+                player.getWorld().dropItemNaturally(location, new ItemStack(Material.MONSTER_EGG, 1, (short) 94));
+            } else if (interactedEntityType == EntityType.WOLF) {
+                player.getWorld().dropItemNaturally(location, new ItemStack(Material.MONSTER_EGG, 1, (short) 95));
+            } else if (interactedEntityType == EntityType.VILLAGER) {
+                player.getWorld().dropItemNaturally(location, new ItemStack(Material.MONSTER_EGG, 1, (short) 120));
+            } else {
+                event.setCancelled(true);
+                return;
+            }
             player.launchProjectile(Egg.class);
-            System.out.println("Egg launched!");
-            location.getWorld().playEffect(location, Effect.POTION_BREAK, 4);
-            System.out.println("Potion sound!");
             interactedEntity.remove();
-            System.out.println("Entity removed!");
             location.getWorld().playEffect(location, Effect.SMOKE, 4);
-            System.out.println("Smoke effect!");
-            interactedEntity.getWorld().dropItemNaturally(location, new ItemStack(interactedEntityEgg));
-            System.out.println("Spawn egg dropped!");
-            player.sendMessage(pluginPrefix + ChatColor.GREEN + " You caught a " + ChatColor.DARK_AQUA + interactedEntityName + ChatColor.GREEN + "!");
-        } else {  System.out.println("Shit aint custom named tho!"); }
+            player.sendMessage(pluginPrefix + ChatColor.GREEN + " You caught a " + ChatColor.BLUE + interactedEntityName + ChatColor.GREEN + "!");
+        }
     }
     public ShapedRecipe AnimalCatcher = new ShapedRecipe(setName(new ItemStack(Material.EGG), ChatColor.AQUA + "AnimalCatcher")).shape(" ! ","!!!"," ! ").setIngredient('!', Material.EGG);
 
