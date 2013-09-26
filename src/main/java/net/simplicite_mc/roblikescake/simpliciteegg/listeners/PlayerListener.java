@@ -30,45 +30,54 @@ public class PlayerListener implements Listener {
     public void PlayerCatchAnimal(PlayerInteractEntityEvent event) {
         String pluginPrefix = ChatColor.BLACK + "[" + ChatColor.AQUA + "SMC" + ChatColor.GRAY + "-" + ChatColor.DARK_AQUA + "Egg" + ChatColor.BLACK + "]";
         Player player = event.getPlayer();
-        Entity interactedEntity = event.getRightClicked();
-        EntityType interactedEntityType = interactedEntity.getType();
-        String interactedEntityName = interactedEntity.getType().name();
-        Location location = interactedEntity.getLocation();
         ItemStack itemStack = player.getItemInHand();
 
-        if (itemStack.getType() != Material.EGG) {
+        if (!itemStack.isSimilar(getAnimalCatcher())) {
             return;
         }
 
-        if (itemStack.isSimilar(getAnimalCatcher())) {
-            if (interactedEntityType == EntityType.CHICKEN) {
-                player.getWorld().dropItemNaturally(location, new ItemStack(Material.MONSTER_EGG, 1, (short) 93));
-            } else if (interactedEntityType == EntityType.COW) {
-                player.getWorld().dropItemNaturally(location, new ItemStack(Material.MONSTER_EGG, 1, (short) 92));
-            } else if (interactedEntityType == EntityType.HORSE) {
-                player.getWorld().dropItemNaturally(location, new ItemStack(Material.MONSTER_EGG, 1, (short) 100));
-            } else if (interactedEntityType == EntityType.MUSHROOM_COW) {
-                player.getWorld().dropItemNaturally(location, new ItemStack(Material.MONSTER_EGG, 1, (short) 96));
-            } else if (interactedEntityType == EntityType.OCELOT) {
-                player.getWorld().dropItemNaturally(location, new ItemStack(Material.MONSTER_EGG, 1, (short) 98));
-            } else if (interactedEntityType == EntityType.PIG) {
-                player.getWorld().dropItemNaturally(location, new ItemStack(Material.MONSTER_EGG, 1, (short) 90));
-            } else if (interactedEntityType == EntityType.SHEEP) {
-                player.getWorld().dropItemNaturally(location, new ItemStack(Material.MONSTER_EGG, 1, (short) 91));
-            } else if (interactedEntityType == EntityType.SQUID) {
-                player.getWorld().dropItemNaturally(location, new ItemStack(Material.MONSTER_EGG, 1, (short) 94));
-            } else if (interactedEntityType == EntityType.WOLF) {
-                player.getWorld().dropItemNaturally(location, new ItemStack(Material.MONSTER_EGG, 1, (short) 95));
-            } else if (interactedEntityType == EntityType.VILLAGER) {
-                player.getWorld().dropItemNaturally(location, new ItemStack(Material.MONSTER_EGG, 1, (short) 120));
-            } else {
-                event.setCancelled(true);
-                return;
-            }
-            player.launchProjectile(Egg.class);
-            interactedEntity.remove();
-            location.getWorld().playEffect(location, Effect.SMOKE, 4);
-            player.sendMessage(pluginPrefix + ChatColor.GREEN + " You caught a " + ChatColor.BLUE + interactedEntityName + ChatColor.GREEN + "!");
+        Entity entity = event.getRightClicked();
+
+        short dataValue = getEntityShort(entity.getType());
+
+        if (dataValue == 0) {
+            event.setCancelled(true);
+            return;
+        }
+
+        Location location = entity.getLocation();
+
+        player.getWorld().dropItemNaturally(location, new ItemStack(Material.MONSTER_EGG, 1, dataValue));
+        player.launchProjectile(Egg.class);
+        entity.remove();
+        location.getWorld().playEffect(location, Effect.SMOKE, 4);
+        player.sendMessage(pluginPrefix + ChatColor.GREEN + " You caught a " + ChatColor.BLUE + entity.getType().name() + ChatColor.GREEN + "!");
+    }
+
+    public short getEntityShort(EntityType entityType) {
+        switch (entityType) {
+            case PIG:
+                return 90;
+            case SHEEP:
+                return 91;
+            case COW:
+                return 92;
+            case CHICKEN:
+                return 93;
+            case SQUID:
+                return 94;
+            case WOLF:
+                return 95;
+            case MUSHROOM_COW:
+                return 96;
+            case OCELOT:
+                return 98;
+            case HORSE:
+                return 100;
+            case VILLAGER:
+                return 120;
+            default:
+                return 0;
         }
     }
 
